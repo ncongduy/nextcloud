@@ -16,6 +16,32 @@ A complete guide to deploying your own private cloud storage using [Nextcloud](h
 | **External Storage** | Dedicated disk (USB/HDD/SSD) mounted as Nextcloud storage |
 | **Tailscale** | Secure HTTPS access to Nextcloud from any device on your tailnet |
 
+## Architecture Overview
+
+```
+┌──────────────┐       Tailscale        ┌──────────────────────────────────┐
+│ Your Devices │◄──── WireGuard ────►   │         Home Server              │
+│ (Phone, PC)  │       Tunnel           │                                  │
+└──────────────┘                        │  ┌─────────────┐                 │
+                                        │  │  Tailscale  │ :443 (HTTPS)    │
+                                        │  │  serve      │────┐            │
+                                        │  └─────────────┘    │            │
+                                        │                     ▼            │
+                                        │  ┌─────────────────────────┐     │
+                                        │  │   Nextcloud (Snap)      │     │
+                                        │  │   Apache :8080          │     │
+                                        │  │   PHP-FPM               │     │
+                                        │  │   MySQL                 │     │
+                                        │  └────────┬────────────────┘     │
+                                        │           │                      │
+                                        │           ▼                      │
+                                        │  ┌─────────────────┐             │
+                                        │  │  /mnt/nextcloud │             │
+                                        │  │  (External Disk)│             │
+                                        │  └─────────────────┘             │
+                                        └──────────────────────────────────┘
+```
+
 ---
 
 ## Prerequisites
@@ -264,35 +290,6 @@ sudo snap logs nextcloud.apache -n 50
 sudo snap logs nextcloud.apache -f
 ```
 
----
-
-## Architecture Overview
-
-```
-┌──────────────┐       Tailscale        ┌──────────────────────────────────┐
-│ Your Devices │◄──── WireGuard ────►   │         Home Server              │
-│ (Phone, PC)  │       Tunnel           │                                  │
-└──────────────┘                        │  ┌─────────────┐                 │
-                                        │  │  Tailscale  │ :443 (HTTPS)    │
-                                        │  │  serve      │────┐            │
-                                        │  └─────────────┘    │            │
-                                        │                     ▼            │
-                                        │  ┌─────────────────────────┐     │
-                                        │  │   Nextcloud (Snap)      │     │
-                                        │  │   Apache :8080          │     │
-                                        │  │   PHP-FPM               │     │
-                                        │  │   MySQL                 │     │
-                                        │  └────────┬────────────────┘     │
-                                        │           │                      │
-                                        │           ▼                      │
-                                        │  ┌─────────────────┐             │
-                                        │  │  /mnt/nextcloud │             │
-                                        │  │  (External Disk)│             │
-                                        │  └─────────────────┘             │
-                                        └──────────────────────────────────┘
-```
-
----
 
 ## References
 
