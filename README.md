@@ -44,6 +44,15 @@ A complete guide to deploying your own private cloud storage using [Nextcloud](h
 
 ---
 
+## Recommended resources
+
+- vCPU: 2
+- RAM: 2 GB
+- Disk: 20GB
+- OS: Ubuntu Server 24.04 LTS
+  
+---
+
 ## Prerequisites
 
 - An Ubuntu/Debian server (physical or VM) with `sudo` access
